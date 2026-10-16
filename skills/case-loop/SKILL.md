@@ -48,11 +48,11 @@ description: >-
 
 ## 打开可视化
 
-写完后必须用 agent 内置浏览器打开这次的页面，显示在对话旁边，并告知 JSON 路径。只把链接写进回复不算完成。
+写完后必须先尝试用 agent 内置浏览器打开这次的页面；内置浏览器不可用或打开失败时，再用系统默认浏览器打开同一页面。最后告知 JSON 路径。
 
 `http://127.0.0.1:3927/?dir=<项目根>&file=<slug>.json`
 
-`dir` 是项目根绝对路径，不是 `.case-loop`。`dir` 和 `file` 都要做查询参数编码。Cursor 调用 `browser_navigate`，`position` 设为 `side`。没有内置浏览器时，再把这个 URL 交给用户。
+`dir` 是项目根绝对路径，不是 `.case-loop`。`dir` 和 `file` 都要做查询参数编码。
 
 一台机器只开一个查看器，后台启动，不要传 `--dir`，也不要结束别人的进程。脚本用本 skill 目录下的 `scripts/case-loop-viewer.mjs`，和本文件放在一起。
 
