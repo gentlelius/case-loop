@@ -2,14 +2,14 @@
 name: case-loop
 description: >-
   Generates and revises software test cases as JSON in the current project's
-  .case-loop directory after a Socratic detail-gathering round. Use when the
+  .case-loop directory with minimal user input. Use when the
   user asks to 生成测试用例, 新增测试用例, 修改测试用例, 补测试用例, 写测试用例,
   or to create or update test cases.
 ---
 
 # Case Loop
 
-生成或修改测试用例。追问是为了补齐细节，不是教学：问清楚后必须写出 JSON。
+生成或修改测试用例。默认生成完整内容，用户只补必要缺口；不要让用户逐项填写用例字段。
 
 页面只编辑已有 JSON，不在页面里生成用例。用例目录是 agent 当前工作区里的 `.case-loop`，随这次执行的项目变化。
 
@@ -17,7 +17,7 @@ description: >-
 
 ## 先读再问
 
-第一轮禁止写 JSON。先读：
+生成前先读；信息足够时第一轮即可写 JSON：
 
 - 用户这次给出的需求、改动说明、相关代码
 - 当前项目 `.case-loop/*.json` 的 `id`、`title` 和用例标题
@@ -33,10 +33,11 @@ description: >-
 
 细节、停止条件和示例见 [questions.md](questions.md)。字段与落盘规则见 [schema.md](schema.md)。
 
-- 用用户的语言。每轮 3 到 5 个具体问题，只问上下文里还没有的缺口。
-- 开放问题写在对话里。只有封闭选项时才用 AskQuestion。
-- 用户说「可以生成 / 够了 / 就这样」后停止追问并写文件。
-- 用户坚持马上生成：只再问一轮仍空缺的阻塞项（主路径、可观察结果；修改时再加变更点）。仍拒绝就生成，并把缺口写进对应用例的 `note`，`status` 保持 `draft`。
+- 优先从需求、已有用例和相关代码提取信息，不重复询问已知内容。
+- 只追问会改变测试目标、主路径或可观察预期的关键缺口；不要求固定问题数。问题尽量集中在一轮，并给出容易回答的选项。
+- 普通输入自动生成并写入步骤；优先级由 AI 初步判断，备注默认省略。不要为账号、环境、优先级等字段逐项追问。
+- 公共条件与数据放在 root/group 中一次维护；同一缺口集中记录一次。具体规则见 schema.md。
+- 信息足够或用户说「可以生成 / 够了 / 就这样」时直接写文件。无法确认的业务规则、真实数据标为待补充，保留 draft，不编造，也不阻塞其他用例生成。
 
 ## 写入
 
